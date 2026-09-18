@@ -1,0 +1,421 @@
+```html
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petualangan Husnuzan - Game Pendidikan Agama Islam SD</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Fredoka & Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti for Victory Celebrations -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        * {
+            font-family: 'Fredoka', 'Inter', sans-serif;
+            user-select: none;
+        }
+
+        .title-3d {
+            color: #fef08a;
+            text-shadow: 
+                0 2px 0 #ca8a04,
+                0 4px 0 #a16207,
+                0 6px 0 #854d0e,
+                0 8px 0 #713f12,
+                0 10px 14px rgba(0, 0, 0, 0.6);
+        }
+
+        .wood-banner {
+            background: linear-gradient(180deg, #92400e 0%, #78350f 100%);
+            border: 4px solid #f59e0b;
+            box-shadow: 0 6px 0 #451a03, inset 0 2px 6px rgba(255,255,255,0.4);
+        }
+
+        .game-btn {
+            transition: all 0.15s ease;
+            position: relative;
+        }
+
+        .game-btn:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.08);
+        }
+
+        .game-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 rgba(0,0,0,0.5) !important;
+        }
+
+        .game-btn-yellow {
+            background: linear-gradient(180deg, #fde047 0%, #eab308 100%);
+            border: 4px solid #78350f;
+            box-shadow: 0 6px 0 #451a03, inset 0 3px 0 rgba(255,255,255,0.7);
+            color: #451a03;
+        }
+
+        .game-btn-blue {
+            background: linear-gradient(180deg, #38bdf8 0%, #0284c7 100%);
+            border: 4px solid #1e3a8a;
+            box-shadow: 0 6px 0 #0f172a, inset 0 3px 0 rgba(255,255,255,0.7);
+            color: #ffffff;
+        }
+
+        .game-btn-green {
+            background: linear-gradient(180deg, #4ade80 0%, #16a34a 100%);
+            border: 4px solid #14532d;
+            box-shadow: 0 6px 0 #052e16, inset 0 3px 0 rgba(255,255,255,0.7);
+            color: #ffffff;
+        }
+
+        .game-btn-purple {
+            background: linear-gradient(180deg, #c084fc 0%, #9333ea 100%);
+            border: 4px solid #4c1d95;
+            box-shadow: 0 6px 0 #2e1065, inset 0 3px 0 rgba(255,255,255,0.7);
+            color: #ffffff;
+        }
+
+        .game-btn-orange {
+            background: linear-gradient(180deg, #fb923c 0%, #ea580c 100%);
+            border: 4px solid #7c2d12;
+            box-shadow: 0 6px 0 #431407, inset 0 3px 0 rgba(255,255,255,0.7);
+            color: #ffffff;
+        }
+
+        .game-btn-red {
+            background: linear-gradient(180deg, #f97316 0%, #dc2626 100%);
+            border: 4px solid #7f1d1d;
+            box-shadow: 0 8px 0 #450a0a, inset 0 4px 0 rgba(255,255,255,0.7);
+            color: #ffffff;
+        }
+
+        .stone-card {
+            background: linear-gradient(180deg, #fef3c7 0%, #fde68a 100%);
+            border: 6px solid #78350f;
+            box-shadow: 0 10px 0 #451a03, inset 0 0 15px rgba(120, 53, 15, 0.2);
+        }
+
+        .input-game {
+            background-color: #fffbeb;
+            border: 3px solid #78350f;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.15);
+            color: #451a03;
+        }
+
+        .bg-animated-sky {
+            background: linear-gradient(-45deg, #0ea5e9, #38bdf8, #818cf8, #34d399);
+            background-size: 400% 400%;
+            animation: gradientSky 15s ease infinite;
+        }
+
+        @keyframes gradientSky {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .bg-forest {
+            background: linear-gradient(180deg, #064e3b 0%, #022c22 100%);
+        }
+
+        .bg-classroom {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        }
+
+        .bg-park {
+            background: linear-gradient(180deg, #bfdbfe 0%, #86efac 100%);
+        }
+
+        .bg-arena {
+            background: linear-gradient(135deg, #4c1d95 0%, #1e1b4b 100%);
+        }
+
+        .badge-pulse {
+            animation: pulseGlow 2s infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+
+        .bounce-slow {
+            animation: bounceSlow 2s infinite;
+        }
+
+        @keyframes bounceSlow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            body {
+                background: white !important;
+                color: black !important;
+            }
+            main {
+                padding: 0 !important;
+            }
+            #printable-certificate {
+                border-width: 4px !important;
+                box-shadow: none !important;
+            }
+        }
+
+        /* Animated Fog / Mist Effect for Main Menu */
+        .fog-wrapper {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .fog-layer {
+            position: absolute;
+            top: 0;
+            left: -50%;
+            width: 200%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.3) 0%, rgba(224, 242, 254, 0.15) 45%, transparent 70%);
+            filter: blur(25px);
+            opacity: 0.65;
+        }
+
+        .fog-layer-1 {
+            animation: floatFog1 22s ease-in-out infinite alternate;
+        }
+
+        .fog-layer-2 {
+            top: 15%;
+            background: radial-gradient(ellipse at center, rgba(186, 230, 253, 0.35) 0%, rgba(255, 255, 255, 0.1) 50%, transparent 75%);
+            filter: blur(35px);
+            opacity: 0.55;
+            animation: floatFog2 28s ease-in-out infinite alternate;
+        }
+
+        .fog-layer-3 {
+            bottom: -15%;
+            height: 70%;
+            background: linear-gradient(to top, rgba(255, 255, 255, 0.4) 0%, rgba(240, 253, 250, 0.15) 50%, transparent 100%);
+            filter: blur(20px);
+            opacity: 0.7;
+            animation: floatFog3 18s ease-in-out infinite alternate;
+        }
+
+        @keyframes floatFog1 {
+            0% { transform: translateX(-12%) translateY(-4%) scale(1); }
+            50% { transform: translateX(8%) translateY(4%) scale(1.08); }
+            100% { transform: translateX(18%) translateY(-2%) scale(1.03); }
+        }
+
+        @keyframes floatFog2 {
+            0% { transform: translateX(12%) scale(1.08); }
+            50% { transform: translateX(-8%) scale(0.95); }
+            100% { transform: translateX(-18%) scale(1.05); }
+        }
+
+        @keyframes floatFog3 {
+            0% { transform: translateY(0%) scale(1); opacity: 0.5; }
+            50% { transform: translateY(-6%) scale(1.05); opacity: 0.8; }
+            100% { transform: translateY(2%) scale(0.98); opacity: 0.6; }
+        }
+
+        .loading-gold-frame {
+            border: 6px solid #f59e0b;
+            box-shadow: 0 0 25px rgba(245, 158, 11, 0.4), inset 0 0 15px rgba(0, 0, 0, 0.8);
+        }
+
+        .progress-gold-border {
+            border: 4px solid #fbbf24;
+            box-shadow: 0 0 12px rgba(251, 191, 36, 0.5), inset 0 2px 4px rgba(0,0,0,0.6);
+        }
+
+        .glow-star {
+            filter: drop-shadow(0 0 12px #fde047) drop-shadow(0 0 24px #eab308);
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-800 min-h-screen flex flex-col justify-between overflow-x-hidden" onclick="initAudioOnInteraction()">
+
+    <!-- Audio Element untuk Backsound (Vocaroo MP3 Direct Link) -->
+    <audio id="bgm-player" loop preload="auto">
+        <source src="https://media.vocaroo.com/mp3/18jLaKPzlTPX" type="audio/mp3">
+    </audio>
+
+    <!-- FULLSCREEN CUSTOM STYLED LOADING OVERLAY -->
+    <div id="loading-overlay" class="fixed inset-0 z-50 flex flex-col items-center justify-center p-4 sm:p-6 text-white text-center transition-opacity duration-500 bg-cover bg-center bg-no-repeat" style="background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0.35), rgba(15, 23, 42, 0.65)), url('https://i.ibb.co.com/6JbvCNhz/Gemini-Generated-Image-ygxcwfygxcwfygxc.jpg');">
+        <div class="max-w-xl w-full bg-slate-900/90 loading-gold-frame rounded-3xl p-6 sm:p-8 shadow-2xl backdrop-blur-md relative overflow-hidden flex flex-col items-center">
+            
+            <div class="fog-wrapper opacity-40">
+                <div class="fog-layer fog-layer-1"></div>
+                <div class="fog-layer fog-layer-2"></div>
+            </div>
+
+            <div class="w-full flex justify-between items-center text-amber-300 text-xs font-bold px-2 mb-1 relative z-10 opacity-80">
+                <span>🗺️ PETUALANGAN PAI SD</span>
+                <span class="text-xl">🌙</span>
+            </div>
+
+            <!-- Top Characters Waving & Glowing Star -->
+            <div class="flex justify-center items-center space-x-3 mb-2 relative z-10">
+                <img src="https://i.ibb.co.com/dYzPJ22/IMG-20260918-143603.jpg" class="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover border-2 border-amber-400 shadow-md animate-bounce" alt="Rafi">
+                <span class="text-5xl sm:text-6xl glow-star animate-pulse">⭐</span>
+                <img src="https://i.ibb.co.com/5hzWXc2T/IMG-20260918-143618.jpg" class="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover border-2 border-amber-400 shadow-md animate-bounce" style="animation-delay: 0.2s" alt="Aisyah">
+            </div>
+
+            <!-- 3D Title Banner -->
+            <h2 id="loading-title" class="text-3xl sm:text-4xl font-black title-3d tracking-wider uppercase mb-4 leading-tight">
+                PETUALANGAN<br>HUSNUZAN
+            </h2>
+
+            <div class="w-full bg-slate-800/80 border-2 border-amber-500/50 rounded-2xl p-4 mb-6 shadow-inner relative z-10 backdrop-blur-sm">
+                <p id="loading-tip" class="text-sm sm:text-base text-amber-100 font-semibold italic min-h-[52px] flex items-center justify-center text-center">
+                    "Selamat datang! Menyiapkan media pembelajaran PAI interaktif..."
+                </p>
+            </div>
+
+            <div class="w-full bg-slate-950 rounded-full h-7 progress-gold-border p-1 relative z-10 overflow-hidden shadow-2xl mb-2">
+                <div id="loading-bar" class="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 h-full rounded-full w-0 transition-all duration-300 shadow-md flex items-center justify-end pr-1">
+                    <span class="inline-block text-xs">✨</span>
+                </div>
+            </div>
+
+            <div class="w-full flex justify-between items-center text-xs sm:text-sm font-extrabold text-amber-300 px-2 relative z-10">
+                <span id="loading-status-text">Hampir Selesai...</span>
+                <span id="loading-percentage" class="text-amber-200">0%</span>
+            </div>
+
+            <div class="w-full flex justify-between items-center text-lg mt-3 opacity-70 relative z-10">
+                <span title="Lentera">🏮 🏕️</span>
+                <span title="Kompas">🧭 🗺️</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Header Navigation Bar -->
+    <header class="bg-slate-800/90 backdrop-blur border-b border-slate-700 text-white px-4 py-3 sticky top-0 z-40 shadow-md">
+        <div class="max-w-5xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="showScreen('screen-char-select')">
+                <span class="text-2xl">🌟</span>
+                <div>
+                    <h1 class="font-bold text-lg md:text-xl text-amber-400 leading-tight">Petualangan Husnuzan</h1>
+                    <p class="text-xs text-slate-300 hidden sm:block">Media Pembelajaran PAI Interaktif SD (30 Soal)</p>
+                </div>
+            </div>
+
+            <!-- Player Status Display -->
+            <div id="header-status" class="hidden flex items-center space-x-2 sm:space-x-4">
+                <div class="flex items-center bg-slate-700/80 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full border border-slate-600">
+                    <span id="header-avatar" class="mr-1.5 sm:mr-2 flex items-center"></span>
+                    <div class="text-left">
+                        <span id="header-name" class="font-bold text-xs sm:text-sm text-emerald-300 block leading-none">Ahmad</span>
+                        <span id="header-detail" class="text-[9px] sm:text-[10px] text-slate-400 block leading-none mt-0.5">Absen: 12 • Kelas 3</span>
+                    </div>
+                </div>
+                <div class="flex items-center bg-amber-500/20 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full border border-amber-500/40">
+                    <i class="fa-solid fa-star text-amber-400 mr-1 text-xs sm:text-sm"></i>
+                    <span id="header-stars" class="font-bold text-xs sm:text-sm text-amber-300">0 / 5</span>
+                </div>
+                <div class="flex items-center bg-cyan-500/20 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full border border-cyan-500/40">
+                    <i class="fa-solid fa-trophy text-cyan-400 mr-1 text-xs sm:text-sm"></i>
+                    <span id="header-score" class="font-bold text-xs sm:text-sm text-cyan-300">0 Poin</span>
+                </div>
+                <button onclick="toggleAudio()" id="audio-btn" class="bg-slate-700 hover:bg-slate-600 p-2 rounded-full text-white transition shadow-sm" title="Matikan/Hidupkan Suara">
+                    <i class="fa-solid fa-volume-high text-emerald-400"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN GAME CONTAINER -->
+    <main class="flex-grow flex items-center justify-center p-3 md:p-6 max-w-5xl mx-auto w-full">
+
+        <!-- SCREEN 1: MAIN MENU & REGISTRATION -->
+        <section id="screen-char-select" class="w-full bg-slate-900/40 rounded-3xl p-4 sm:p-6 md:p-8 shadow-2xl border-4 border-amber-500 text-center relative overflow-hidden bg-cover bg-center bg-no-repeat transition-all duration-500" style="background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0.4), rgba(15, 23, 42, 0.6)), url('https://i.ibb.co.com/jth5TjQ/1789716373159.png');">
+            
+            <div class="fog-wrapper">
+                <div class="fog-layer fog-layer-1"></div>
+                <div class="fog-layer fog-layer-2"></div>
+                <div class="fog-layer fog-layer-3"></div>
+            </div>
+
+            <div class="mb-3 relative z-10">
+                <span class="inline-block px-5 py-2 bg-gradient-to-r from-emerald-600 via-green-500 to-teal-600 text-white border-2 border-emerald-300 rounded-full text-xs sm:text-sm font-black tracking-wide shadow-lg uppercase">
+                    📖 GAME EDUKASI PAI SD - KELAS 3 (💫 PAI QUEST: MENCARI BINTANG KEBAIKAN)
+                </span>
+            </div>
+
+            <div class="mb-4 relative z-10 flex items-center justify-center space-x-2 sm:space-x-4">
+                <span class="text-3xl sm:text-5xl bounce-slow">⭐</span>
+                <h2 class="text-3xl sm:text-5xl md:text-6xl font-black title-3d tracking-wide uppercase leading-none">
+                    PETUALANGAN<br>HUSNUZAN
+                </h2>
+                <span class="text-3xl sm:text-5xl bounce-slow">⭐</span>
+            </div>
+
+            <div class="max-w-2xl mx-auto wood-banner rounded-2xl p-3 sm:p-4 mb-6 relative z-10 shadow-xl">
+                <p class="text-amber-100 text-xs sm:text-sm md:text-base font-extrabold leading-relaxed text-shadow">
+                    🌟 Ayo Jadi Pahlawan Kebaikan! 🌟<br>
+                    Bantu Rafi & Aisyah mengumpulkan 5 Bintang Kebaikan ⭐<br>
+                    Hadapi Hutan Prasangka dan jadilah Pemenang Husnuzan! 👑
+                </p>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5 max-w-4xl mx-auto mb-6 relative z-10">
+                <button onclick="openModal('modal-materi')" class="game-btn game-btn-yellow p-3 rounded-2xl font-black text-xs transition flex flex-col items-center shadow-md">
+                    <span class="text-2xl mb-1">📖</span>
+                    <span>Menu Materi</span>
+                </button>
+                <button onclick="openModal('modal-tujuan')" class="game-btn game-btn-blue p-3 rounded-2xl font-black text-xs transition flex flex-col items-center shadow-md">
+                    <span class="text-2xl mb-1">🎯</span>
+                    <span>Tujuan Belajar</span>
+                </button>
+                <button onclick="openModal('modal-petunjuk')" class="game-btn game-btn-green p-3 rounded-2xl font-black text-xs transition flex flex-col items-center shadow-md">
+                    <span class="text-2xl mb-1">🎮</span>
+                    <span>Petunjuk Gim</span>
+                </button>
+                <button onclick="openModal('modal-skor')" class="game-btn game-btn-purple p-3 rounded-2xl font-black text-xs transition flex flex-col items-center shadow-md">
+                    <span class="text-2xl mb-1">🏆</span>
+                    <span>Papan Skor</span>
+                </button>
+                <button onclick="openModal('modal-vs-setup')" class="col-span-2 sm:col-span-1 game-btn game-btn-orange p-3 rounded-2xl font-black text-xs transition flex flex-col items-center shadow-md">
+                    <span class="text-2xl mb-1">🚴</span>
+                    <span>Balapan 2 Pemain</span>
+                </button>
+            </div>
+
+            <div class="max-w-xl mx-auto stone-card rounded-3xl p-5 sm:p-6 shadow-2xl mb-6 text-left relative z-10">
+                <div class="bg-amber-900/90 text-amber-100 text-center py-2 px-4 rounded-xl font-black text-sm sm:text-base border-2 border-amber-600 mb-4 shadow-inner tracking-wider">
+                    📜 DAFTAR PEMAIN (ABSENSI)
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
+                    <div class="sm:col-span-2">
+                        <label class="block text-xs font-black text-amber-950 mb-1">Nama Lengkap Siswa:</label>
+                        <input type="text" id="player-name-input" value="Ahmad Raihan" placeholder="Masukkan nama..." 
+                               class="w-full px-4 py-2.5 rounded-xl input-game text-sm font-bold shadow-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-black text-amber-950 mb-1">No. Absen:</label>
+                        <input type="number" id="player-absen-input" value="12" min="1" max="50" placeholder="12" 
+                               class="w-full px-4 py-2.5 rounded-xl input-game text-sm font-bold text-center shadow-sm">
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-xs font-black text-amber-950 mb-1">Kelas / Sekolah:</label>
+                    <input type="text" id="player-class-input" value="Kelas 3 SD" placeholder="Contoh: Kelas 3A SDN 1" 
+                           class="w-full px-4 py-2.5 rounded-xl input-game text-sm font-bold shadow-sm">
+                </div>
+
+                <label class="block text-xs font-black text-amber-950 mb-2">Pilih Karakter Pemain Solo:</label>
+                <div class="flex justify-center gap-4">
+             
